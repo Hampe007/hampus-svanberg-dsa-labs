@@ -1,0 +1,107 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+PS C:\Users\hampus.carlstromsva\Documents\Github\hampus-svanberg-dsa-labs> dotnet --info
+.NET SDK:
+ Version:           10.0.401
+ Commit:            e34a38d2ae
+ Workload version:  10.0.400-manifests.b0700452
+ MSBuild version:   18.9.11+e34a38d2a
+
+Runtime Environment:
+ OS Name:     Windows
+ OS Version:  10.0.26300
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   C:\Program Files\dotnet\sdk\10.0.401\
+
+.NET workloads installed:
+There are no installed workloads to display.
+Configured to use workload sets when installing new manifests.
+No workload sets are installed. Run "dotnet workload restore" to install a workload set.
+
+Host:
+  Version:      10.0.12
+  Architecture: x64
+  Commit:       95017c711e
+
+.NET SDKs installed:
+  10.0.401 [C:\Program Files\dotnet\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  Not set
+
+global.json file:
+  Not found
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+PS C:\Users\hampus.carlstromsva\Documents\Github\hampus-svanberg-dsa-labs> dotnet restore .\labs\00-problem-solving-workflow\DSA.Lab00.sln
+Restore complete (2,1s)
+
+Build succeeded in 2,2s
+PS C:\Users\hampus.carlstromsva\Documents\Github\hampus-svanberg-dsa-labs> dotnet build .\labs\00-problem-solving-workflow\DSA.Lab00.sln
+Restore complete (0,4s)
+  DSA.Lab00.Core netstandard2.1 succeeded (2,6s) → labs\00-problem-solving-workflow\src\DSA.Lab00.Core\bin\Debug\netstandard2.1\DSA.Lab00.Core.dll
+  DSA.Lab00.App net10.0 succeeded (0,9s) → labs\00-problem-solving-workflow\src\DSA.Lab00.App\bin\Debug\net10.0\DSA.Lab00.App.dll
+  DSA.Lab00.Tests net10.0 succeeded (2,6s) → labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\bin\Debug\net10.0\DSA.Lab00.Tests.dll
+
+Build succeeded in 5,7s
+PS C:\Users\hampus.carlstromsva\Documents\Github\hampus-svanberg-dsa-labs> dotnet run --project .\labs\00-problem-solving-workflow\src\DSA.Lab00.App
+DSA Lab 0 - baseline
+
+Found player Cleo with score 160.
+
+Next: open the lab README and work through the tasks.
+PS C:\Users\hampus.carlstromsva\Documents\Github\hampus-svanberg-dsa-labs> dotnet test labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests
+Restore complete (0,2s)
+  DSA.Lab00.Core netstandard2.1 succeeded (0,1s) → labs\00-problem-solving-workflow\src\DSA.Lab00.Core\bin\Debug\netstandard2.1\DSA.Lab00.Core.dll
+  DSA.Lab00.Tests net10.0 succeeded (0,1s) → labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\bin\Debug\net10.0\DSA.Lab00.Tests.dll
+NUnit Adapter 6.3.1.0: Test execution started
+Running all tests in C:\Users\hampus.carlstromsva\Documents\Github\hampus-svanberg-dsa-labs\labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\bin\Debug\net10.0\DSA.Lab00.Tests.dll
+   NUnit3TestExecutor discovered 6 of 6 NUnit test cases using Current Discovery mode, Non-Explicit run
+  DSA.Lab00.Tests test net10.0 failed with 2 error(s) (2,5s)
+    C:\Users\hampus.carlstromsva\Documents\Github\hampus-svanberg-dsa-labs\labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\PlayerCollectionTests.cs(59): error TESTERROR:
+      ContainsName_ReturnsTrueWhenNameExists (20ms): Error Message:   Assert.That(contains, Is.True)
+        Expected: True
+        But was:  False
+
+      Stack Trace:
+         at DSA.Lab00.Tests.PlayerCollectionTests.ContainsName_ReturnsTrueWhenNameExists() in C:\Users\hampus.carlstroms
+      va\Documents\Github\hampus-svanberg-dsa-labs\labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\PlayerCollecti
+      onTests.cs:line 59
+
+      1)    at DSA.Lab00.Tests.PlayerCollectionTests.ContainsName_ReturnsTrueWhenNameExists() in C:\Users\hampus.carlstr
+      omsva\Documents\Github\hampus-svanberg-dsa-labs\labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\PlayerColle
+      ctionTests.cs:line 59
+    C:\Users\hampus.carlstromsva\Documents\Github\hampus-svanberg-dsa-labs\labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\PlayerCollectionTests.cs(38): error TESTERROR:
+      FindHighestScore_ReturnsPlayerWithHighestScore (< 1ms): Error Message:   Assert.That(player, Is.Not.Null)
+        Expected: not null
+        But was:  null
+
+      Stack Trace:
+         at DSA.Lab00.Tests.PlayerCollectionTests.FindHighestScore_ReturnsPlayerWithHighestScore() in C:\Users\hampus.ca
+      rlstromsva\Documents\Github\hampus-svanberg-dsa-labs\labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\Player
+      CollectionTests.cs:line 38
+
+      1)    at DSA.Lab00.Tests.PlayerCollectionTests.FindHighestScore_ReturnsPlayerWithHighestScore() in C:\Users\hampus
+      .carlstromsva\Documents\Github\hampus-svanberg-dsa-labs\labs\00-problem-solving-workflow\tests\DSA.Lab00.Tests\Pla
+      yerCollectionTests.cs:line 38
+
+Test summary: total: 6; failed: 2; succeeded: 4; skipped: 0; duration: 2,4s
+Build failed with 2 error(s) in 3,2s
