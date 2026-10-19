@@ -38,7 +38,18 @@ public sealed class PlayerCollectionTests
         Assert.That(player, Is.Not.Null);
         Assert.That(player!.Id, Is.EqualTo(734));
     }
+    
+    [Test]
+    public void FindHighestScore_ReturnsOnlyPlayer()
+    {
+        Player player = new Player(1, "Harry", 123);
+        PlayerCollection collection = new(new List<Player> {player});
 
+        Player? result = collection.FindHighestScore();
+
+        Assert.That(result, Is.SameAs(player));
+    }
+    
     [Test]
     public void FindHighestScore_ReturnsNullForEmptyCollection()
     {
