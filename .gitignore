@@ -1,0 +1,22 @@
+# .NET build output
+**/bin/
+**/obj/
+
+# Test results
+**/TestResults/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# VS Code local settings
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
