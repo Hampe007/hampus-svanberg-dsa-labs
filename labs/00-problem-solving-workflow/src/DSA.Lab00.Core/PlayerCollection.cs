@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DSA.Lab00
 {
@@ -49,10 +50,7 @@ namespace DSA.Lab00
 
         public bool ContainsName(string name)
         {
-            // TODO:
-            // Return true when a player with exactly this name exists.
-            // Use case-sensitive comparison for this lab.
-            return false;
+            return _players.Any(player => player.Name == name);
         }
     }
 }
