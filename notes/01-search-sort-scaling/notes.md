@@ -89,3 +89,38 @@ For an empty array, `low` starts at `0` and `high` becomes `-1`. The condition `
 
 This test checks the boundary where there are no valid indices. It would catch an implementation that tries to inspect a middle value before checking whether the search range is empty. The existing empty-array test for linear search does not verify this behavior in binary search.
 
+## Task 4 — Implement insertion sort
+
+Insertion sort grows a sorted section from left to right. I save the next value, shift larger values one position to the right, and insert the saved value into the gap.
+
+### Tracing the example
+
+The first value forms the initial sorted section. For `[7, 2, 5, 1]`, the full array after each outer-loop step is:
+
+| Step | Value to insert | Action | Full array afterward |
+| --- | ---: | --- | --- |
+| 1 | 2 | Shift 7 right and insert 2 at index 0. | `[2, 7, 5, 1]` |
+| 2 | 5 | Shift 7 right and insert 5 at index 1. | `[2, 5, 7, 1]` |
+| 3 | 1 | Shift 7, 5, and 2 right and insert 1 at index 0. | `[1, 2, 5, 7]` |
+
+### How my implementation works
+
+The outer loop starts at `i = 1` because the first value by itself is already sorted. `i` identifies the next value to insert into the sorted section.
+
+I save `values[i]` in `valueToInsert` before moving any values. This prevents losing the value when its original position is overwritten.
+
+`j` starts at `i - 1` and moves backward through the sorted section. While `j >= 0` and `values[j] > valueToInsert`, I copy `values[j]` to `values[j + 1]` and decrease `j`.
+
+The condition checks `j >= 0` first. Because `&&` stops evaluating when that condition is false, the code never tries to read `values[-1]`.
+
+When the inner loop ends, `j + 1` is the insertion position. I place `valueToInsert` there. After each outer-loop step, the sorted section includes one more value.
+
+The method changes the original array directly. It does not create a second array or use `Array.Sort`. Empty and one-element arrays need no sorting, so the outer loop is skipped. Null input throws `ArgumentNullException`.
+
+### Efficiency
+
+The implementation uses O(1) extra space because it only stores a fixed number of variables.
+
+For an already-sorted array, no values need shifting, so the running time is O(n). In the worst case, such as a reverse-sorted array, each new value must move past all earlier values. The total number of shifts is `1 + 2 + ... + (n - 1)`, giving O(n²) time.
+
+Shifting larger values is a standard efficient implementation of insertion sort. Other sorting algorithms can be faster for large unsorted arrays, but this implementation follows the mechanism required by the task, so I followed the task specs.
