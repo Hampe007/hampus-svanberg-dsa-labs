@@ -164,3 +164,45 @@ Background activity, CPU speed changes, memory caches, and .NET runtime compilat
 Repeating the application helps reveal the consistent pattern and unusual results. For example, linear search at 100,000 values usually took about 32 µs, but two runs showed 35.44 µs and 37.41 µs. I should compare the pattern across runs rather than treat any single measurement as an exact performance guarantee.
 
 (Also the use of IDE, and in my case, Rider, may be diffrent to someone who uses VS or VS Code which can impact the timings)
+
+## Task 6 — Connect behavior to Big-O
+
+Big-O describes how the amount of work grows as the input size `n` increases. It gives an upper bound on growth, ignoring constant factors and smaller terms. It does not tell me an exact number of milliseconds or mean that every input takes the worst-case amount of work.
+
+### Why is array indexing treated as O(1)?
+
+Accessing `values[index]` goes directly to a position in the array. For an `int[]`, the position can be calculated from the array's starting location, the index, and the fixed size of each integer. The program does not need to scan the earlier elements.
+
+The amount of work does not grow with the array's length, so indexing is treated as O(1), or constant time. Constant time does not mean that every access takes exactly the same number of nanoseconds; hardware and memory caches can still affect the measured time.
+
+### Why is linear search O(n) in the worst case?
+
+My `LinearSearch` checks values one at a time. If the target is missing or is the last value, it must check all `n` values before returning.
+
+Doubling the array size doubles the number of values checked in the worst case. This gives O(n), or linear growth. If the first value matches, the method returns after one check, so its best case is O(1).
+
+### Why is binary search O(log n)?
+
+My `BinarySearch` checks the middle value and discards roughly half of the remaining range after each unsuccessful comparison. The possible range shrinks like `n`, `n / 2`, `n / 4`, `n / 8`, and so on.
+
+The number of times I can halve `n` before reaching a range of about one value is approximately `log₂(n)`. For example, one million values need at most about 20 iterations. Doubling the input adds only about one iteration in the worst case.
+
+Each iteration does a constant amount of work, giving O(log n) worst-case time. This depends on having sorted data and direct array indexing. The method assumes the array is already sorted; this bound does not include sorting it first.
+
+### Why is insertion sort O(n²) in the worst case?
+
+My `InsertionSort` inserts each new value into the sorted section. For a reverse-sorted array, every new value is smaller than all the values already in that section, so all of them must shift right.
+
+The first insertion shifts one value, the next shifts two, and the last can shift `n - 1` values. The total number of shifts is:
+
+```text
+1 + 2 + ... + (n - 1) = n(n - 1) / 2
+```
+
+The `n²` term dominates as `n` grows, so the worst-case time is O(n²), or quadratic growth. Doubling a large input produces roughly four times as much worst-case work.
+
+Nested loops alone do not prove O(n²): the important detail is how many times the inner loop runs overall. On an already-sorted array, no shifting is needed, so this implementation takes O(n) time.
+
+### Connecting the explanations to my measurements
+
+In Task 5, linear-search timings grew much more than binary-search timings as the input grew. This agrees with the expected O(n) and O(log n) patterns. The measured times did not follow exact ratios because Big-O describes growth in work rather than precise elapsed time.
