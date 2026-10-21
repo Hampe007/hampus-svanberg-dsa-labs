@@ -1,5 +1,4 @@
-@ -0,0 +1,73 @@
-# Lab 01 — Search, Sort and Scaling
+﻿# Lab 01 — Search, Sort and Scaling
 
 ## Task 1 — Understand linear search
 
@@ -28,6 +27,7 @@ The target is the last value or is missing from the array. The method must check
 ### If the array becomes twice as large, what happens to the worst-case amount of work?
 
 The method checks twice as many values in the worst case. For example, an array with 100 values may require 100 checks, while an array with 200 values may require 200 checks. This describes the amount of work, not an exact running time.
+
 ## Task 2 — Implement binary search
 
 `BinarySearch` searches an array that is already sorted in ascending order. Instead of checking every value, it checks the middle of the remaining search range and discards the half that cannot contain the target.
@@ -62,3 +62,30 @@ The ordering tells me which half can still contain the target. Without sorted da
 Binary search has O(log n) worst-case time complexity because each unsuccessful iteration discards roughly half the remaining values. My iterative implementation uses O(1) extra space because it only keeps a fixed number of variables.
 
 A safer midpoint calculation for very large arrays is `low + (high - low) / 2`, which avoids potential integer overflow from adding `low` and `high`.
+
+## Task 3 — Strengthen the tests
+
+### Choosing an extra search test
+
+The supplied binary-search tests already cover a matching index, the first element, the last element, and a missing target between two existing values. They did not cover an empty array.
+
+I added `BinarySearch_ReturnsMinusOneForEmptyArray` to check that searching an empty array returns `-1` without trying to access an element that does not exist.
+
+```csharp
+[Test]
+public void BinarySearch_ReturnsMinusOneForEmptyArray()
+{
+    int[] values = { };
+
+    int result = SearchAlgorithms.BinarySearch(values, 7);
+
+    Assert.That(result, Is.EqualTo(-1));
+}
+```
+
+### Why this case is meaningful
+
+For an empty array, `low` starts at `0` and `high` becomes `-1`. The condition `low <= high` is immediately false, so the search loop is skipped and the method returns `-1`.
+
+This test checks the boundary where there are no valid indices. It would catch an implementation that tries to inspect a middle value before checking whether the search range is empty. The existing empty-array test for linear search does not verify this behavior in binary search.
+
