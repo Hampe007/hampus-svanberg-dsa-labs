@@ -124,3 +124,43 @@ The implementation uses O(1) extra space because it only stores a fixed number o
 For an already-sorted array, no values need shifting, so the running time is O(n). In the worst case, such as a reverse-sorted array, each new value must move past all earlier values. The total number of shifts is `1 + 2 + ... + (n - 1)`, giving O(n²) time.
 
 Shifting larger values is a standard efficient implementation of insertion sort. Other sorting algorithms can be faster for large unsorted arrays, but this implementation follows the mechanism required by the task, so I followed the task specs.
+
+## Task 5 — Observe scaling
+
+I ran the console application nine times in Release mode from the Lab 01 folder:
+
+```bash
+dotnet run --project ./src/DSA.Lab01.App -c Release
+```
+
+The benchmark searches for `-1` in sorted arrays containing values from `0` to `n - 1`. Because the target is missing, linear search must inspect the entire array. Binary search repeatedly halves the remaining range until it is empty.
+
+### Recorded timings
+
+The table uses the median of the nine displayed timings for each input size and method. The median is the middle value after sorting the measurements. It represents a typical run without choosing the fastest result. Each displayed timing is itself an average per search over repeated calls in the app. All times are in microseconds (µs).
+
+| Input size | Linear search (median) | Binary search (median) | What changed? |
+| ---: | ---: | ---: | --- |
+| 10,000 | 6.11 µs | 0.10 µs | Starting point for comparison. |
+| 100,000 | 32.01 µs | 0.12 µs | Input grew 10 times; linear time grew about 5.2 times, while binary time grew about 1.2 times. |
+| 1,000,000 | 305.34 µs | 0.19 µs | Input grew another 10 times; linear time grew about 9.5 times, while binary time grew about 1.6 times. |
+
+Across the nine runs, linear search ranged from 6.07–6.68 µs at 10,000 values, 31.91–37.41 µs at 100,000, and 301.21–317.89 µs at 1,000,000. Binary search ranged from 0.10–0.17 µs, 0.12–0.12 µs, and 0.18–0.20 µs respectively, at the precision shown by the app.
+
+### Which method changes more as n grows?
+
+Linear search changes much more. From 10,000 to 1,000,000 values, the input becomes 100 times larger and its median time increases about 50 times. Binary search's median time increases only about 1.9 times and stays below one microsecond in these runs.
+
+### Does the measurement match my prediction?
+
+The overall pattern matches the prediction: linear search grows much more strongly with input size than binary search. Linear search checks all `n` values for this missing target, giving O(n) work. Binary search takes O(log n) work; increasing the input tenfold adds only about three or four search iterations.
+
+The timings do not scale in exact proportion to the theoretical work. In particular, the first tenfold increase produces about a fivefold increase in linear time rather than tenfold. Runtime warm-up, measurement overhead, and hardware effects can affect these rough timings. The results support the expected growth pattern, but timing measurements alone do not prove the complexity.
+
+### Why should I be cautious about drawing conclusions from one timing run?
+
+Background activity, CPU speed changes, memory caches, and .NET runtime compilation and optimization can influence a run. This app uses different repetition counts for different sizes and has no dedicated benchmark warm-up. Binary-search timings are especially short, so overhead and rounding can noticeably affect the displayed numbers.
+
+Repeating the application helps reveal the consistent pattern and unusual results. For example, linear search at 100,000 values usually took about 32 µs, but two runs showed 35.44 µs and 37.41 µs. I should compare the pattern across runs rather than treat any single measurement as an exact performance guarantee.
+
+(Also the use of IDE, and in my case, Rider, may be diffrent to someone who uses VS or VS Code which can impact the timings)
