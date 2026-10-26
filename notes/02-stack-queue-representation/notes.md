@@ -113,3 +113,57 @@ All three operations take `O(1)` time because no items need to shift. The array 
 All 10 existing lab tests passed, including FIFO order, wrap-around, `Peek`, empty `Dequeue`, and full `Enqueue`.
 
 **Wohoo!**
+
+## Task 5 - Compare representations
+
+### 1. Why can ListQueue<T>.Dequeue require work proportional to the number of queued items?
+
+`ListQueue<T>.Dequeue` uses `RemoveAt(0)`. Removing the first item makes `List<T>` shift every remaining item one position left. With n items, n - 1 items need to move, so the operation takes `O(n)` time.
+
+```text
+Before: A B C D
+Remove A, then move B, C, and D one position left.
+After:  B C D
+```
+
+### 2. Why does RingQueue<T>.Dequeue avoid shifting the remaining items?
+
+`RingQueue<T>` keeps track of the front using `_head`. It reads and clears that slot, then moves `_head` to the next index and decreases `_count`. The other items stay where they are.
+
+```csharp
+_head = (_head + 1) % Capacity;
+```
+
+`%` gives the remainder after division. For example, `5 % 5` is `0`, so the next index after `4` becomes `0`. The `%` calculation\* wraps `_head` back to 0 when it reaches the end of the array. The amount of work stays the same regardless of how many items are queued, so `Dequeue` takes `O(1)` time.
+
+\*Apparently called a "modulo operation". Fun to learn new things every day. :)
+
+### 3. What trade-off does the fixed-capacity ring queue make?
+
+The ring queue gives us `O(1)` enqueue and dequeue operations without resizing or shifting items. In exchange, we have to choose its capacity when creating it. It cannot grow automatically, and `Enqueue` throws `InvalidOperationException` when it is full.
+
+The whole array is allocated at the start, so unused slots still take up space. `ListQueue<T>` can grow as needed, but an enqueue that triggers growth has to allocate a larger array and copy the existing items.
+
+| Operation | ListQueue<T> | RingQueue<T> |
+| --- | --- | --- |
+| `Enqueue` | `O(1)` amortized\*, `O(n)` when resizing | `O(1)`, throws when full |
+| `Peek` | `O(1)` | `O(1)` |
+| `Dequeue` | `O(n)` | `O(1)` |
+| Capacity | Can grow automatically | Fixed when created |
+
+\*Amortized means the average cost per operation over a long sequence. Most list enqueues are cheap, but occasionally one needs to resize the array.
+
+### 4. Why is the abstraction queue different from its representation?
+
+The queue abstraction describes the behavior: add at the back, inspect or remove from the front, and keep FIFO order. The representation describes how the items are stored and how those operations are carried out.
+
+Both implementations can produce the same result:
+
+```text
+Enqueue A, B, C
+Dequeue returns A
+Dequeue returns B
+Dequeue returns C
+```
+
+`ListQueue<T>` uses a list and shifts items when removing from the front. `RingQueue<T>` uses an array with indices that wrap around. The FIFO behavior is the same, but the operation costs and capacity limits are different.
