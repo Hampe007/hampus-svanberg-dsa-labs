@@ -1,4 +1,4 @@
-# Lab 00 — Problem-Solving Workflow
+# Lab 00 - Problem-Solving Workflow
 
 ## Understanding FindById
 `FindById` goes through the players one at a time, comparing each players ID with the supplied ID. It returns the first matching player.
