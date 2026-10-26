@@ -1,4 +1,4 @@
-﻿# Lab 2 - Stack, Queue and Representation
+# Lab 2 - Stack, Queue and Representation
 
 ## Task 1 - Trace the abstractions before coding
 
@@ -33,3 +33,32 @@ Clearing the slot means the array no longer keeps a reference to the removed ite
 
 Pushing into a full stack throws InvalidOperationException.
 Peek and Pop also throw InvalidOperationException when the stack is empty.
+
+## Task 3 - Inspect the working ListQueue<T>
+
+Dequeue removes the item at index 0. This is the oldest item still in the queue, so it follows FIFO: first in, first out.
+
+After checking that the queue is not empty, it runs:
+
+```csharp
+T item = _items[0];  // Save the first item.
+_items.RemoveAt(0); // Remove it. List<T> shifts the remaining items left.
+return item;        // Return the saved item.
+```
+
+The shift closes the gap at index 0:
+
+```text
+Index:           0  1  2
+Before Dequeue:  A  B  C
+After Dequeue:   B  C
+Returned: A
+```
+
+B moves from index 1 to 0, and C moves from index 2 to 1.
+
+With 100,000 items, one Dequeue shifts 99,999 items. Dequeue takes O(n) time because the work grows with the number of queued items. Repeated dequeues can become expensive for a large queue.
+
+Peek only reads index 0 without removing anything or shifting items, so it takes O(1) time.
+
+The implementation works correctly. The cost comes from how the queue stores and removes its items. Task 3 is about understanding this, so there is no need to optimize it yet.
