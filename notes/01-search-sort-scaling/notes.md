@@ -1,6 +1,6 @@
-﻿# Lab 01 — Search, Sort and Scaling
+﻿# Lab 01 - Search, Sort and Scaling
 
-## Task 1 — Understand linear search
+## Task 1 - Understand linear search
 
 `LinearSearch` goes through the array one value at a time, comparing each value with the target. It returns the index of the first match. If the target does not exist, it returns `-1`.
 
@@ -28,7 +28,7 @@ The target is the last value or is missing from the array. The method must check
 
 The method checks twice as many values in the worst case. For example, an array with 100 values may require 100 checks, while an array with 200 values may require 200 checks. This describes the amount of work, not an exact running time.
 
-## Task 2 — Implement binary search
+## Task 2 - Implement binary search
 
 `BinarySearch` searches an array that is already sorted in ascending order. Instead of checking every value, it checks the middle of the remaining search range and discards the half that cannot contain the target.
 
@@ -63,7 +63,7 @@ Binary search has O(log n) worst-case time complexity because each unsuccessful 
 
 A safer midpoint calculation for very large arrays is `low + (high - low) / 2`, which avoids potential integer overflow from adding `low` and `high`.
 
-## Task 3 — Strengthen the tests
+## Task 3 - Strengthen the tests
 
 ### Choosing an extra search test
 
@@ -89,7 +89,7 @@ For an empty array, `low` starts at `0` and `high` becomes `-1`. The condition `
 
 This test checks the boundary where there are no valid indices. It would catch an implementation that tries to inspect a middle value before checking whether the search range is empty. The existing empty-array test for linear search does not verify this behavior in binary search.
 
-## Task 4 — Implement insertion sort
+## Task 4 - Implement insertion sort
 
 Insertion sort grows a sorted section from left to right. I save the next value, shift larger values one position to the right, and insert the saved value into the gap.
 
@@ -125,7 +125,7 @@ For an already-sorted array, no values need shifting, so the running time is O(n
 
 Shifting larger values is a standard efficient implementation of insertion sort. Other sorting algorithms can be faster for large unsorted arrays, but this implementation follows the mechanism required by the task, so I followed the task specs.
 
-## Task 5 — Observe scaling
+## Task 5 - Observe scaling
 
 I ran the console application nine times in Release mode from the Lab 01 folder:
 
@@ -165,7 +165,7 @@ Repeating the application helps reveal the consistent pattern and unusual result
 
 (Also the use of IDE, and in my case, Rider, may be diffrent to someone who uses VS or VS Code which can impact the timings)
 
-## Task 6 — Connect behavior to Big-O
+## Task 6 - Connect behavior to Big-O
 
 Big-O describes how the amount of work grows as the input size `n` increases. It gives an upper bound on growth, ignoring constant factors and smaller terms. It does not tell me an exact number of milliseconds or mean that every input takes the worst-case amount of work.
 
