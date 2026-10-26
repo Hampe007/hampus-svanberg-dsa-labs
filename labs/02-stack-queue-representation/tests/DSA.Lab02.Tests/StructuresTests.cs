@@ -73,6 +73,20 @@ namespace DSA.Lab02.Tests
         }
 
         [Test]
+        public void RingQueue_CanBeReusedAfterBecomingEmpty()
+        {
+            var queue = new RingQueue<int>(2);
+
+            queue.Enqueue(10);
+            queue.Dequeue();
+
+            queue.Enqueue(20);
+
+            Assert.That(queue.Dequeue(), Is.EqualTo(20));
+            Assert.That(queue.Count, Is.EqualTo(0));
+        }
+
+        [Test]
         public void RingQueue_PeekDoesNotRemove()
         {
             var queue = new RingQueue<int>(2);

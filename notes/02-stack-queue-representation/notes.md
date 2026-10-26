@@ -167,3 +167,42 @@ Dequeue returns C
 ```
 
 `ListQueue<T>` uses a list and shifts items when removing from the front. `RingQueue<T>` uses an array with indices that wrap around. The FIFO behavior is the same, but the operation costs and capacity limits are different.
+
+## Task 6 - Add one meaningful test
+
+Added `RingQueue_CanBeReusedAfterBecomingEmpty` in `StructuresTests.cs`.
+
+The test checks that the same queue can be used again after its last item has been removed.
+
+```csharp
+[Test]
+public void RingQueue_CanBeReusedAfterBecomingEmpty()
+{
+    var queue = new RingQueue<int>(2);
+
+    queue.Enqueue(10);
+    queue.Dequeue();
+
+    queue.Enqueue(20);
+
+    Assert.That(queue.Dequeue(), Is.EqualTo(20));
+    Assert.That(queue.Count, Is.EqualTo(0));
+}
+```
+
+First, it adds 10 and removes it, leaving the queue empty. Then it adds 20 to the same queue.
+
+The first assertion checks that removing the new item returns 20. The second checks that `Count` is back to 0 afterwards.
+
+### What bugs would this test catch?
+
+- Returning an old value or reading the wrong slot when the queue is reused after becoming empty.
+- `Count` not returning to 0 after the new item is removed.
+
+### Why this test?
+
+It checks that the queue can be used again after becoming empty. The existing `RingQueue_WrapsAround` test covers wrap-around with several queued items.
+
+### Test results
+
+All 11 lab tests passed, including this test. :D
