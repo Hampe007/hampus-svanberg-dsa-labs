@@ -22,20 +22,35 @@ namespace DSA.Lab02
 
         public void Push(T item)
         {
-            // TODO: place the item at the logical top and update the state.
-            throw new NotImplementedException();
+            if (_count == Capacity)
+            {
+                throw new InvalidOperationException("The stack is full.");
+            }
+            _items[_count] = item;
+            _count++;
         }
 
         public T Peek()
         {
-            // TODO: return the logical top without removing it.
-            throw new NotImplementedException();
+            if (_count == 0)
+            {
+                throw new InvalidOperationException("The stack is empty.");
+            }
+
+            return _items[_count - 1];
         }
 
         public T Pop()
         {
-            // TODO: remove and return the logical top.
-            throw new NotImplementedException();
+            if (_count == 0)
+            {
+                throw new InvalidOperationException("The stack is empty.");
+            }
+
+            _count--;
+            T item = _items[_count];
+            _items[_count] = default!;
+            return item;
         }
     }
 }
