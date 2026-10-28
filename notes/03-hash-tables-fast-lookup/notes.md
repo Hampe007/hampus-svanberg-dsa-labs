@@ -19,3 +19,23 @@ A missing-key lookup grows from 100 key comparisons to 100,000: 1,000 times as m
 We want to improve lookup by key: finding the value associated with an ID, or determining that the ID is absent. A hash table uses the key to select a bucket so that lookup only scans entries in that bucket. With a suitable distribution of keys and enough buckets relative to the number of entries, lookup is expected O(1), although collisions can still lead to O(n) worst-case lookup.
 
 `Set` also scans the list to check whether a key already exists before replacing its value or appending a new entry, so that search has O(n) worst-case cost too.
+
+## Task 2 - Understand buckets
+
+The bucket function is `bucketIndex = key % bucketCount`. The `%` operator gives the remainder after division. With five buckets, the possible indices are 0 through 4.
+
+| Key | Calculation | Bucket index |
+| --- | --- | --- |
+| 101 | 101 = 20 * 5 + 1 | 1 |
+| 205 | 205 = 41 * 5 + 0 | 0 |
+| 734 | 734 = 146 * 5 + 4 | 4 |
+| 206 | 206 = 41 * 5 + 1 | 1 |
+| 999 | 999 = 199 * 5 + 4 | 4 |
+
+### Which keys collide?
+
+- 101 and 206 collide in bucket 1.
+- 734 and 999 collide in bucket 4.
+- 205 is alone in bucket 0. Buckets 2 and 3 are empty.
+
+A collision means that different keys produce the same bucket index. It is expected and does not mean that one entry must overwrite another. This hash table uses separate chaining: each bucket contains a list of entries. To find a key, we calculate its bucket index and then compare the full keys within that bucket to identify the correct entry.
