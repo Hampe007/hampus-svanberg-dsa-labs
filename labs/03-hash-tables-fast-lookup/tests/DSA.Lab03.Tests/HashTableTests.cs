@@ -44,6 +44,18 @@ namespace DSA.Lab03.Tests
         }
 
         [Test]
+        public void HashTable_MissingCollidingKeyReturnsFalse()
+        {
+            var table = new IntHashTable<string>(5);
+            table.Set(1, "A");
+            table.Set(6, "B");
+            
+            Assert.That(table.TryGetValue(11, out var value), Is.False);
+            Assert.That(value, Is.Null);
+            Assert.That(table.ContainsKey(11), Is.False);
+        }
+
+        [Test]
         public void HashTable_ContainsKeyUsesStoredKeys()
         {
             var table = new IntHashTable<int>(3);

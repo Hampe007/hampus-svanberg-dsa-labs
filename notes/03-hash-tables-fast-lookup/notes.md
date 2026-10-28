@@ -75,3 +75,13 @@ The bucket becomes a long list, and lookup must scan through it. If that bucket 
 Big-O describes how the amount of work grows with the collection size. A lookup still calculates the bucket index, accesses the bucket, compares keys, and returns a result. These steps require multiple CPU operations, and collisions can require several comparisons.
 
 Expected O(1) lookup assumes a suitable distribution of keys and enough buckets relative to the number of entries, so bucket lists stay short on average. This implementation has a fixed bucket count and does not resize. If we keep adding entries without adding buckets, even evenly distributed keys create longer lists, so lookup cannot stay constant on average indefinitely.
+
+## Task 5 - Add one meaningful test
+
+Added `HashTable_MissingCollidingKeyReturnsFalse`. This test creates a table with five buckets and stores keys 1 and 6 which it then looks up key 11, which was never added. (All three keys map to bucket 1.)
+
+The test verifies that `TryGetValue(11, out var value)` returns `false`, that the output value is null for this string-valued table, and that `ContainsKey(11)` returns `false`.
+
+Using `out var value` declares the output variable and lets C# infer its type from the method parameter. The assertions still check the same behavior as when the type was written explicitly.
+
+This covers a gap in the existing missing-key test which stores key 1 but looks up key 99, which maps to an empty bucket. The new test checks that lookup correctly reports a missing key after searching an occupied bucket containing colliding entries. Sharing a bucket does not mean that the key exists.
