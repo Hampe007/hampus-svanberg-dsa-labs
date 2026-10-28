@@ -155,7 +155,7 @@ The whole array is allocated at the start, so unused slots still take up space. 
 
 ### 4. Why is the abstraction queue different from its representation?
 
-The queue abstraction describes the behavior: add at the back, inspect or remove from the front, and keep FIFO order. The representation describes how the items are stored and how those operations are carried out.
+The queue abstraction (WHAT a queue does) describes the behavior: add at the back, inspect or remove from the front, and keep FIFO order. The representation (HOW a queue is implemented) describes how the items are stored and how those operations are carried out.
 
 Both implementations can produce the same result:
 
