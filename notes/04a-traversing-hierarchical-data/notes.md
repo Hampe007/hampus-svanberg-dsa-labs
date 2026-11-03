@@ -34,3 +34,22 @@ A recursive algorithm can:
 For example, counting the nodes under `Movement` means counting `Movement` itself, then counting the subtrees rooted at `Dash` and `Climb`: `1 + 1 + 1 = 3`.
 
 A leaf has no children (`IsLeaf` is true). Recursion naturally stops there because there are no child calls to make, and the leaf returns its own result to its parent.
+
+## Task 3 - Implement CountNodes
+
+Before coding, trace this hierarchy:
+
+```text
+A
+|- B
+`- C
+```
+
+1. `CountNodes(A)` starts with 1 for A itself.
+2. `CountNodes(B)` returns 1 because B has no children. A's count becomes 2.
+3. `CountNodes(C)` returns 1 because C has no children. A's count becomes 3.
+4. `CountNodes(A)` returns 3.
+
+The implementation starts each call with `count = 1`, then adds `CountNodes(child)` for every child subtree. A leaf returns 1 naturally because its loop has no iterations. A null root throws `ArgumentNullException`.
+
+Every node is counted once, so the time complexity is O(n). Recursive calls use O(h) additional call-stack space, where h is the tree height.

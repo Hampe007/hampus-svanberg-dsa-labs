@@ -18,8 +18,14 @@ namespace DSA.Lab04A
                 throw new ArgumentNullException(nameof(root));
             }
 
-            // TODO: count this node, then count every child subtree.
-            throw new NotImplementedException();
+            int count = 1;
+
+            foreach (var child in root.Children)
+            {
+                count += CountNodes(child);
+            }
+
+            return count;
         }
 
         public static bool Contains<T>(HierarchyNode<T> root, T target)
