@@ -35,8 +35,20 @@ namespace DSA.Lab04A
                 throw new ArgumentNullException(nameof(root));
             }
 
-            // TODO: compare the current node, then search child subtrees.
-            throw new NotImplementedException();
+            if (EqualityComparer<T>.Default.Equals(root.Value, target))
+            {
+                return true;
+            }
+
+            foreach (var child in root.Children)
+            {
+                if (Contains(child, target))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static IReadOnlyList<T> DepthFirstPreOrder<T>(HierarchyNode<T> root)

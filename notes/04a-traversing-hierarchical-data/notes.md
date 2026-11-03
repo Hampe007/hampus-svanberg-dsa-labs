@@ -53,3 +53,18 @@ A
 The implementation starts each call with `count = 1`, then adds `CountNodes(child)` for every child subtree. A leaf returns 1 naturally because its loop has no iterations. A null root throws `ArgumentNullException`.
 
 Every node is counted once, so the time complexity is O(n). Recursive calls use O(h) additional call-stack space, where h is the tree height.
+
+## Task 4 - Implement Contains
+
+`Contains` checks whether any node in the hierarchy has a value equal to the target.
+
+1. Compare the current node's value with the target using `EqualityComparer<T>.Default`. This uses the normal equality rules for T without assuming a specific type.
+2. If the value matches, return `true` immediately.
+3. Otherwise, recursively search each child subtree. If any child call returns `true`, return `true` immediately.
+4. Return `false` only after every child subtree has been searched without a match.
+
+For example, searching for `Bow` checks `Survival`, then `Movement`, `Dash`, `Climb`, `Combat`, `Sword`, and finally `Bow`. Finding `Bow` returns `true` back through `Combat` to `Survival`. Searching for `Magic` checks all seven nodes and returns `false`.
+
+A leaf either matches and returns `true`, or has no children to search and returns `false`. A null root throws `ArgumentNullException`.
+
+The best case is O(1) when the root matches. The worst case is O(n) because every node may need to be checked. Recursive calls use O(h) additional call-stack space, where h is the tree height. These time costs assume each equality comparison takes constant time.
