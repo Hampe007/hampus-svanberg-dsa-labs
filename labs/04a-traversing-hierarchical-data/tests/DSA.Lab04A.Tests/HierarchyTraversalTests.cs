@@ -81,6 +81,18 @@ namespace DSA.Lab04A.Tests
         }
 
         [Test]
+        public void DepthFirstPreOrder_PreservesDuplicateValues()
+        {
+            var root = new HierarchyNode<string>("Root");
+            HierarchyNode<string> left = root.AddChild("Skill");
+            left.AddChild("Upgrade");
+            HierarchyNode<string> right = root.AddChild("Skill");
+            right.AddChild("Upgrade");
+
+            Assert.That(HierarchyTraversal.DepthFirstPreOrder(root), Is.EqualTo(new[] { "Root", "Skill", "Upgrade", "Skill", "Upgrade" }));
+        }
+
+        [Test]
         public void MaxDepth_SingleNodeIsZero()
         {
             var root = new HierarchyNode<string>("Root");

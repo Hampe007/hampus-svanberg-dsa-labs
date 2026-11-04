@@ -122,3 +122,23 @@ Recursive calls use the program's call stack. When a method calls itself for a c
 For example, `CountNodes(Survival)` pauses while `CountNodes(Movement)` runs, and that call pauses while `CountNodes(Dash)` runs. Dash is a leaf and returns 1, allowing Movement to continue with Climb before returning its total to Survival.
 
 The number of active recursive calls depends on the tree height h, so additional call-stack space is O(h). A broad, shallow tree uses fewer active calls than a long chain with the same number of nodes. A very deep hierarchy can exhaust the call stack and cause a stack overflow.
+
+## Task 8 - Add one meaningful test
+
+`DepthFirstPreOrder_PreservesDuplicateValues` checks that separate nodes with equal values are all included in the traversal result.
+
+The test builds this hierarchy:
+
+```text
+Root
+|- Skill
+|  `- Upgrade
+`- Skill
+   `- Upgrade
+```
+
+The expected result is `Root, Skill, Upgrade, Skill, Upgrade`. Each Skill node and each Upgrade node must appear, even though their values are equal. The exact sequence also checks that the first child subtree is completed before moving to the second.
+
+The supplied traversal tests use unique values, so they would not catch an implementation that incorrectly skips nodes whose values have already been visited. This test protects the assumption that traversal processes every node, including nodes with duplicate values.
+
+All 11 tests pass, including the new duplicate-value test.
