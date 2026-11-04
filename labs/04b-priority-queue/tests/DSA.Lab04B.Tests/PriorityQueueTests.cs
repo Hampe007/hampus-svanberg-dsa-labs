@@ -112,6 +112,26 @@ namespace DSA.Lab04B.Tests
         }
 
         [Test]
+        public void HeapQueue_InterleavedEnqueueAndDequeueReturnsCurrentMinimum()
+        {
+            var queue = new BinaryHeapDispatchQueue<string>();
+            queue.Enqueue("A", 5);
+            queue.Enqueue("B", 2);
+            queue.Enqueue("C", 8);
+
+            Assert.That(queue.DequeueNext().Item, Is.EqualTo("B"));
+
+            queue.Enqueue("D", 1);
+            Assert.That(queue.DequeueNext().Item, Is.EqualTo("D"));
+
+            queue.Enqueue("E", 6);
+            Assert.That(queue.DequeueNext().Item, Is.EqualTo("A"));
+            Assert.That(queue.DequeueNext().Item, Is.EqualTo("E"));
+            Assert.That(queue.DequeueNext().Item, Is.EqualTo("C"));
+            Assert.That(queue.Count, Is.EqualTo(0));
+        }
+
+        [Test]
         public void HeapQueue_DuplicatePrioritiesKeepAllItems()
         {
             var queue = new BinaryHeapDispatchQueue<string>();

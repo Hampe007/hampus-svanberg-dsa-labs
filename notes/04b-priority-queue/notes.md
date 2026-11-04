@@ -106,3 +106,15 @@ dotnet test labs/04b-priority-queue/tests/DSA.Lab04B.Tests
 ```
 
 All 10 tests pass, with 0 failures and 0 skipped tests. They cover the linear baseline, empty behavior, insertion that moves upward, restoring the next minimum after removal, repeated removals in ascending priority order, single-item behavior, and duplicate priorities.
+## Task 6 - Add one meaningful test
+
+`HeapQueue_InterleavedEnqueueAndDequeueReturnsCurrentMinimum` checks that the queue returns the current minimum when insertions and removals are mixed.
+
+1. Enqueue A with priority 5, B with priority 2, and C with priority 8. Dequeue returns B.
+2. Enqueue D with priority 1. Dequeue returns D, showing that a new smaller entry becomes the minimum after an earlier removal.
+3. Enqueue E with priority 6. The remaining removals return A, E, and C, with priorities 5, 6, and 8.
+4. Check that the final count is 0.
+
+The supplied tests enqueue all entries before removing them. This test checks that insertion and removal continue to work together when new entries arrive while older entries are still waiting.
+
+All 11 tests pass, including the new test, with 0 failures and 0 skipped tests.
