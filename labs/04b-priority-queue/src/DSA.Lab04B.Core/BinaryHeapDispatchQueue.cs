@@ -35,13 +35,22 @@ namespace DSA.Lab04B
 
         public PriorityEntry<T> DequeueNext()
         {
-            // TODO:
-            // 1. Reject an empty queue.
-            // 2. Remember the root: that is the minimum.
-            // 3. Move the final heap entry to the root and remove the final slot.
-            // 4. If anything remains, restore the invariant downward.
-            // 5. Return the old root.
-            throw new NotImplementedException();
+            if (_heap.Count == 0)
+            {
+                throw new InvalidOperationException("The dispatch queue is empty.");
+            }
+
+            PriorityEntry<T> result = _heap[0];
+            int lastIndex = _heap.Count - 1;
+            _heap[0] = _heap[lastIndex];
+            _heap.RemoveAt(lastIndex);
+
+            if (_heap.Count > 0)
+            {
+                SiftDown(0);
+            }
+
+            return result;
         }
 
         private void SiftUp(int index)
@@ -61,10 +70,24 @@ namespace DSA.Lab04B
 
         private void SiftDown(int index)
         {
-            // TODO:
-            // Compare the current entry with its children.
-            // If a child should come first, swap with the smaller-priority child.
-            throw new NotImplementedException();
+            while (LeftChildIndex(index) < _heap.Count)
+            {
+                int smallerChildIndex = LeftChildIndex(index);
+                int rightChildIndex = RightChildIndex(index);
+
+                if (rightChildIndex < _heap.Count && _heap[rightChildIndex].Priority < _heap[smallerChildIndex].Priority)
+                {
+                    smallerChildIndex = rightChildIndex;
+                }
+
+                if (_heap[index].Priority <= _heap[smallerChildIndex].Priority)
+                {
+                    break;
+                }
+
+                Swap(index, smallerChildIndex);
+                index = smallerChildIndex;
+            }
         }
 
         private static int ParentIndex(int index)

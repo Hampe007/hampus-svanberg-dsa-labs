@@ -64,3 +64,36 @@ The new entry reaches the root, restoring the min-heap invariant. Equal prioriti
 Sift up follows one path toward the root and takes O(log n) time in the worst case, using O(1) additional space. Enqueue takes O(log n) amortized time, an individual insertion can take O(n) if the list must resize.
 
 The four selected tests pass, covering insertion and peek, a late smaller item moving to the root, an empty queue's count, and peeking on an empty queue.
+
+## Task 4 - Remove the minimum with sift down
+
+`DequeueNext` removes and returns the root, which contains the smallest priority.
+
+1. Throw `InvalidOperationException` if the queue is empty.
+2. Remember the root entry.
+3. Move the final entry to index 0 and remove the final list slot. This preserves the complete-tree shape.
+4. If entries remain, call `SiftDown(0)` to restore the min-heap invariant.
+5. Return the remembered root.
+
+`SiftDown` chooses the child with the smaller priority. If the current entry has an equal or lower priority, it stops. Otherwise, it swaps with that child and continues downward until the ordering is correct or there are no children.
+
+For example:
+
+```text
+before:                    [3, 4, 9, 12, 7, 10]
+replace root, remove last:  [10, 4, 9, 12, 7]
+swap with smaller child 4: [4, 10, 9, 12, 7]
+swap with smaller child 7: [4, 7, 9, 12, 10]
+return removed priority:   3
+```
+
+Choosing the smaller child matters: swapping 10 with 9 in the first step would leave 9 above its smaller child 4, breaking the invariant.
+
+- **Empty heap:** Throws before accessing index 0.
+- **One remaining item:** Removes the only entry and skips sift down because the heap is now empty.
+- **Only a left child:** Uses the left child without accessing a missing right child.
+- **Two children:** Compares their priorities and uses the smaller one. Either child is valid when their priorities are equal.
+
+Removal takes O(log n) time in the worst case because sift down follows one path through the tree's height. It uses O(1) additional space. Removing the final list slot avoids shifting the remaining entries.
+
+All 10 supplied tests pass, including empty removal, one-item removal, restoring the next minimum, ascending removal order, and preserving items with duplicate priorities.
