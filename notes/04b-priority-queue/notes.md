@@ -40,3 +40,27 @@ For index `i`, the parent index is `(i - 1) / 2` using integer division, the lef
 The tree is complete because each level fills from left to right. It satisfies the min-heap invariant because every parent has a priority less than or equal to its children: `3 <= 4`, `3 <= 9`, `4 <= 12`, `4 <= 7`, and `9 <= 10`.
 
 The minimum is therefore at the root. The list is not fully sorted: for example, 12 appears before 7. Unlike Lab 4A's linked nodes, the list represents parent-child relationships through indices instead of child references.
+
+## Task 3 - Insert with sift up
+
+`Enqueue` appends a new `PriorityEntry<T>` to the list, then calls `SiftUp` with its index. Appending preserves the complete-tree shape, but the new priority may be smaller than its parent's priority.
+
+1. Compare the entry with its parent using `(index - 1) / 2`.
+2. Stop if the parent has an equal or lower priority.
+3. Otherwise, swap the entry with its parent and continue from the parent index.
+4. Stop when the entry reaches the root or its parent already satisfies the min-heap invariant.
+
+For the README example, inserting priority 2 gives:
+
+```text
+before:                 [3, 4, 9, 12, 7, 10]
+append 2 at index 6:    [3, 4, 9, 12, 7, 10, 2]
+swap with parent at 2: [3, 4, 2, 12, 7, 10, 9]
+swap with parent at 0: [2, 4, 3, 12, 7, 10, 9]
+```
+
+The new entry reaches the root, restoring the min-heap invariant. Equal priorities do not need to swap, and inserting into an empty queue stops immediately because the new entry is already at index 0.
+
+Sift up follows one path toward the root and takes O(log n) time in the worst case, using O(1) additional space. Enqueue takes O(log n) amortized time, an individual insertion can take O(n) if the list must resize.
+
+The four selected tests pass, covering insertion and peek, a late smaller item moving to the root, an empty queue's count, and peeking on an empty queue.
