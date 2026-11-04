@@ -97,3 +97,12 @@ Choosing the smaller child matters: swapping 10 with 9 in the first step would l
 Removal takes O(log n) time in the worst case because sift down follows one path through the tree's height. It uses O(1) additional space. Removing the final list slot avoids shifting the remaining entries.
 
 All 10 supplied tests pass, including empty removal, one-item removal, restoring the next minimum, ascending removal order, and preserving items with duplicate priorities.
+## Task 5 - Run the tests
+
+The README command runs the supplied tests from the repository root:
+
+```bash
+dotnet test labs/04b-priority-queue/tests/DSA.Lab04B.Tests
+```
+
+All 10 tests pass, with 0 failures and 0 skipped tests. They cover the linear baseline, empty behavior, insertion that moves upward, restoring the next minimum after removal, repeated removals in ascending priority order, single-item behavior, and duplicate priorities.
