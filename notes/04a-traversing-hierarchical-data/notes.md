@@ -68,3 +68,27 @@ For example, searching for `Bow` checks `Survival`, then `Movement`, `Dash`, `Cl
 A leaf either matches and returns `true`, or has no children to search and returns `false`. A null root throws `ArgumentNullException`.
 
 The best case is O(1) when the root matches. The worst case is O(n) because every node may need to be checked. Recursive calls use O(h) additional call-stack space, where h is the tree height. These time costs assume each equality comparison takes constant time.
+
+## Task 5 - Depth-first pre-order traversal
+
+`DepthFirstPreOrder` returns the values in the hierarchy by visiting the current node before its children. Each child subtree is visited completely before moving to the next sibling, from left to right.
+
+1. Create a list to collect the visited values and pass it to the recursive helper `VisitPreOrder`.
+2. Add the current node's value to the list.
+3. Recursively visit each child subtree in the order stored in `Children`, using the same list.
+4. Return the collected values as an `IReadOnlyList<T>` after all nodes have been visited.
+
+For example, trace this hierarchy:
+
+```text
+A
+|- B
+|  `- D
+`- C
+```
+
+The traversal visits `A`, then `B`, then `D`, and finally `C`. The result is `A, B, D, C`, because B's subtree is completed before moving to C. For the skill hierarchy, the result is `Survival, Movement, Dash, Climb, Combat, Sword, Bow`.
+
+A leaf adds its own value but has no children to visit, so the recursive call returns naturally. A null root throws `ArgumentNullException`.
+
+Every node is visited once, so the time complexity is O(n). The returned list uses O(n) space, and recursive calls use O(h) additional call-stack space, where h is the tree height. Sharing one list avoids copying the results of each child subtree into separate lists.

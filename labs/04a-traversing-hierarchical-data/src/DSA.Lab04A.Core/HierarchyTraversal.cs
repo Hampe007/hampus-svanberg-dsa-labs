@@ -58,9 +58,19 @@ namespace DSA.Lab04A
                 throw new ArgumentNullException(nameof(root));
             }
 
-            // TODO: return values in pre-order:
-            // current node first, then each child subtree from left to right.
-            throw new NotImplementedException();
+            var values = new List<T>();
+            VisitPreOrder(root, values);
+            return values;
+        }
+
+        private static void VisitPreOrder<T>(HierarchyNode<T> node, List<T> values)
+        {
+            values.Add(node.Value);
+
+            foreach (var child in node.Children)
+            {
+                VisitPreOrder(child, values);
+            }
         }
 
         public static int MaxDepth<T>(HierarchyNode<T> root)
