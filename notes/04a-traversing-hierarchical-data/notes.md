@@ -92,3 +92,18 @@ The traversal visits `A`, then `B`, then `D`, and finally `C`. The result is `A,
 A leaf adds its own value but has no children to visit, so the recursive call returns naturally. A null root throws `ArgumentNullException`.
 
 Every node is visited once, so the time complexity is O(n). The returned list uses O(n) space, and recursive calls use O(h) additional call-stack space, where h is the tree height. Sharing one list avoids copying the results of each child subtree into separate lists.
+
+## Task 6 - Implement MaxDepth
+
+`MaxDepth` finds the greatest number of edges from the root to any leaf. A single root has depth 0, a root with one child has maximum depth 1, and a root with a grandchild has maximum depth 2.
+
+1. Start with `maxDepth = 0` for the current node.
+2. Recursively find the maximum depth of each child subtree using `MaxDepth(child)`.
+3. Add 1 for the edge from the current node to that child.
+4. Use `Math.Max` to keep the greatest child depth and return it after checking every child subtree.
+
+For example, the skill hierarchy has maximum depth 2. Adding `Air Dash` as a child of `Dash` creates the path `Survival -> Movement -> Dash -> Air Dash`, which has three edges. `Air Dash` returns 0, `Dash` returns 1, `Movement` returns 2, and `Survival` returns 3. The shorter Combat branch does not change the result because only the deepest branch determines the maximum depth.
+
+A leaf returns 0 naturally because it has no children and its loop has no iterations. A null root throws `ArgumentNullException`.
+
+Every node is visited once, so the time complexity is O(n). Recursive calls use O(h) additional call-stack space, where h is the tree height.

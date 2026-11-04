@@ -80,9 +80,15 @@ namespace DSA.Lab04A
                 throw new ArgumentNullException(nameof(root));
             }
 
-            // Depth is measured in edges from the root.
-            // A single-node tree therefore has max depth 0.
-            throw new NotImplementedException();
+            int maxDepth = 0;
+
+            foreach (var child in root.Children)
+            {
+                int childDepth = 1 + MaxDepth(child);
+                maxDepth = Math.Max(maxDepth, childDepth);
+            }
+
+            return maxDepth;
         }
     }
 }
