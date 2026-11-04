@@ -107,3 +107,18 @@ For example, the skill hierarchy has maximum depth 2. Adding `Air Dash` as a chi
 A leaf returns 0 naturally because it has no children and its loop has no iterations. A null root throws `ArgumentNullException`.
 
 Every node is visited once, so the time complexity is O(n). Recursive calls use O(h) additional call-stack space, where h is the tree height.
+
+## Task 7 - Reason about recursion
+
+Each recursive method solves the problem for the current node and delegates the same problem to each child subtree. Each child call works on a smaller part of the hierarchy.
+
+1. `CountNodes` starts with 1 for the current node, then asks each child subtree for its node count. A leaf has no children, so it returns 1. Each parent adds the returned counts and returns the total for its subtree.
+2. `Contains` compares the current value with the target, then asks each child subtree whether it contains the target. A match returns `true` immediately, skipping any remaining children. A leaf without a match returns `false`, and a parent returns `false` only if none of its child subtrees contains the target.
+3. `DepthFirstPreOrder` creates the result list, and its recursive helper `VisitPreOrder` adds the current value before visiting each child subtree. A leaf adds its value and returns because it has no children. The helper does not return a value; it accumulates values in the shared list, which the public method returns after traversal.
+4. `MaxDepth` starts with depth 0 and asks each child subtree for its maximum depth. A leaf returns 0. Each parent adds 1 for the edge to each child and returns the greatest depth found.
+
+Recursive calls use the program's call stack. When a method calls itself for a child, the parent call pauses while the child call runs. Once the child returns, the parent continues from where it paused, using the returned result or moving to the next child. This follows last-in, first-out order, like the stack from Lab 2, without manually using `Stack<T>`.
+
+For example, `CountNodes(Survival)` pauses while `CountNodes(Movement)` runs, and that call pauses while `CountNodes(Dash)` runs. Dash is a leaf and returns 1, allowing Movement to continue with Climb before returning its total to Survival.
+
+The number of active recursive calls depends on the tree height h, so additional call-stack space is O(h). A broad, shallow tree uses fewer active calls than a long chain with the same number of nodes. A very deep hierarchy can exhaust the call stack and cause a stack overflow.
