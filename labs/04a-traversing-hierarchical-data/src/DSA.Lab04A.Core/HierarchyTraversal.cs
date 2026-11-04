@@ -35,7 +35,7 @@ namespace DSA.Lab04A
                 throw new ArgumentNullException(nameof(root));
             }
 
-            if (Equals(root.Value, target))
+            if (EqualityComparer<T>.Default.Equals(root.Value, target))
             {
                 return true;
             }
