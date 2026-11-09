@@ -51,3 +51,17 @@ SecretRoom -> []
 ```
 
 Building the dictionary and grouping the edges takes **O(V + E)** time and **O(V + E)** additional storage. After preparation, finding the neighbor list for a node is an expected **O(1)** dictionary lookup. Processing its neighbors takes **O(degree(v))** time. This prepares the graph once for the repeated neighbor lookups needed by traversal.
+
+## Task 4 - Breadth-First Search
+
+`BreadthFirstOrder` uses a `Queue<string>` to explore the graph one layer at a time. A `HashSet<string>` records discovered nodes, and a list records the order in which nodes are removed from the queue. The start node is marked visited and enqueued before the loop. Each loop iteration removes one node, adds it to the result, and enqueues neighbors that have not been visited.
+
+Starting at `Entrance` produces this order:
+
+```text
+Entrance -> Hall -> StoreRoom -> Armory -> Courtyard -> BossRoom
+```
+
+Neighbors are marked visited when they are enqueued. This prevents the same node from entering the queue through multiple routes and stops the `Hall -> Courtyard -> Hall` cycle from repeating. `SecretRoom` is not visited because no path from `Entrance` reaches it. An unknown start node returns an empty order.
+
+With the adjacency representation, BFS inspects each reachable node and outgoing edge at most once, giving **O(V + E)** time. The visited set, queue, and result each use up to **O(V)** space.
