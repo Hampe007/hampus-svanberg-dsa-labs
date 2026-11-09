@@ -65,3 +65,15 @@ Entrance -> Hall -> StoreRoom -> Armory -> Courtyard -> BossRoom
 Neighbors are marked visited when they are enqueued. This prevents the same node from entering the queue through multiple routes and stops the `Hall -> Courtyard -> Hall` cycle from repeating. `SecretRoom` is not visited because no path from `Entrance` reaches it. An unknown start node returns an empty order.
 
 With the adjacency representation, BFS inspects each reachable node and outgoing edge at most once, giving **O(V + E)** time. The visited set, queue, and result each use up to **O(V)** space.
+
+## Task 5 - Depth-First Search
+
+`DepthFirstOrder` uses a `Stack<string>` as its frontier and a `HashSet<string>` to track discovered nodes. It marks the start visited, pushes it, then repeatedly pops a node and adds it to the result. Newly discovered neighbors are marked visited when pushed, so cycles and multiple routes do not add duplicate visits.
+
+The adjacency lists keep neighbors in input order. Because a stack removes the most recently pushed item first, DFS examines each neighbor list from the final item to the first item when pushing. This makes the first listed neighbor the next node processed. Starting at `Entrance` gives:
+
+```text
+Entrance -> Hall -> Armory -> BossRoom -> Courtyard -> StoreRoom
+```
+
+DFS explores a branch before returning to a later neighbor. `SecretRoom` stays outside this traversal because it is disconnected. An unknown start node returns an empty order. With adjacency lists, DFS takes **O(V + E)** time and up to **O(V)** space for the visited set, stack, and result.

@@ -54,7 +54,40 @@ namespace DSA.Lab05
             AdjacencyGraph graph,
             string start)
         {
-            throw new NotImplementedException();
+            if (graph == null)
+            {
+                throw new ArgumentNullException(nameof(graph));
+            }
+
+            if (!graph.ContainsNode(start))
+            {
+                return Array.Empty<string>();
+            }
+
+            var order = new List<string>();
+            var frontier = new Stack<string>();
+            var visited = new HashSet<string>();
+
+            visited.Add(start);
+            frontier.Push(start);
+
+            while (frontier.Count > 0)
+            {
+                string current = frontier.Pop();
+                order.Add(current);
+
+                IReadOnlyList<string> neighbors = graph.GetNeighbors(current);
+                for (int index = neighbors.Count - 1; index >= 0; index--)
+                {
+                    string neighbor = neighbors[index];
+                    if (visited.Add(neighbor))
+                    {
+                        frontier.Push(neighbor);
+                    }
+                }
+            }
+
+            return order;
         }
 
         public static bool IsReachableBfs(
