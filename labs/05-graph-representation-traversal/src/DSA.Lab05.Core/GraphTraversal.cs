@@ -95,7 +95,40 @@ namespace DSA.Lab05
             string start,
             string target)
         {
-            throw new NotImplementedException();
+            if (graph == null)
+            {
+                throw new ArgumentNullException(nameof(graph));
+            }
+
+            if (!graph.ContainsNode(start) || !graph.ContainsNode(target))
+            {
+                return false;
+            }
+
+            var frontier = new Queue<string>();
+            var visited = new HashSet<string>();
+
+            visited.Add(start);
+            frontier.Enqueue(start);
+
+            while (frontier.Count > 0)
+            {
+                string current = frontier.Dequeue();
+                if (current == target)
+                {
+                    return true;
+                }
+
+                foreach (string neighbor in graph.GetNeighbors(current))
+                {
+                    if (visited.Add(neighbor))
+                    {
+                        frontier.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

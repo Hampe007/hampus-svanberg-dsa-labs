@@ -87,3 +87,11 @@ Hall -> Courtyard -> Hall -> Courtyard -> ...
 ```
 
 Different routes can also reach the same node. For example, `Courtyard` can be reached from `Hall` or `StoreRoom`. The `HashSet<string>` answers whether a node has already been discovered. BFS and DFS mark each node visited as soon as it enters the queue or stack. If `visited.Add(neighbor)` returns false, that node is already scheduled or processed, so it is not added again. This keeps each reachable node in the frontier at most once and allows traversal to finish even when the graph has cycles.
+
+## Task 7 - Reachability with early exit
+
+`IsReachableBfs` uses a queue and visited set to explore from the start node. When it removes the target from the queue, it returns `true` immediately. If the queue becomes empty first, it returns `false`. It does not build a traversal order because the answer only needs a yes or no result.
+
+For the dungeon graph, `Entrance` can reach `BossRoom`, while it cannot reach the disconnected `SecretRoom`. A node can reach itself, so a valid start that equals the target returns `true` on the first dequeue. If either node is missing from the graph, the method returns `false`.
+
+The search may stop before visiting every reachable node. In the worst case it still takes **O(V + E)** time and **O(V)** space for the queue and visited set.
