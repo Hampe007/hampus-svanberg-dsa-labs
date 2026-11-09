@@ -77,3 +77,13 @@ Entrance -> Hall -> Armory -> BossRoom -> Courtyard -> StoreRoom
 ```
 
 DFS explores a branch before returning to a later neighbor. `SecretRoom` stays outside this traversal because it is disconnected. An unknown start node returns an empty order. With adjacency lists, DFS takes **O(V + E)** time and up to **O(V)** space for the visited set, stack, and result.
+
+## Task 6 - Why visited is essential
+
+The directed edges `Hall -> Courtyard` and `Courtyard -> Hall` form a cycle. Without a visited set, a traversal could keep adding `Hall` and `Courtyard` to its frontier and never finish:
+
+```text
+Hall -> Courtyard -> Hall -> Courtyard -> ...
+```
+
+Different routes can also reach the same node. For example, `Courtyard` can be reached from `Hall` or `StoreRoom`. The `HashSet<string>` answers whether a node has already been discovered. BFS and DFS mark each node visited as soon as it enters the queue or stack. If `visited.Add(neighbor)` returns false, that node is already scheduled or processed, so it is not added again. This keeps each reachable node in the frontier at most once and allows traversal to finish even when the graph has cycles.
