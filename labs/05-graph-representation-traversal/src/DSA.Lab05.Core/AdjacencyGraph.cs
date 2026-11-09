@@ -43,8 +43,7 @@ namespace DSA.Lab05
                         $"Edge {edge} refers to a node that was not supplied.");
                 }
 
-                // TODO:
-                // Add edge.To to the adjacency list belonging to edge.From.
+                _neighborsByNode[edge.From].Add(edge.To);
             }
         }
 

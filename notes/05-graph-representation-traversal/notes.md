@@ -34,4 +34,20 @@ SecretRoom is disconnected: it has no incoming or outgoing edges.
 
 `EdgeListGraph` stores every directed edge in one global list. To find the outgoing neighbors of `Hall`, `GetNeighbors("Hall")` scans that list and keeps the destinations of edges whose `From` is `Hall`. In the dungeon graph, those edges are `Hall -> Armory` and `Hall -> Courtyard`, so the result is `Armory, Courtyard`.
 
-The method checks all `E` edges for each call, giving `GetNeighbors(node)` a time cost of **O(E)**, even when the node has only a few outgoing edges or none. This is correct, but a traversal repeatedly asks for neighbors, repeatedly scanning unrelated edges motivates grouping outgoing neighbors by node in Task 3.
+The method checks all `E` edges for each call, giving `GetNeighbors(node)` a time cost of **O(E)**, even when the node has only a few outgoing edges or none. This implementation is correct. A traversal repeatedly asks for neighbors, so scanning unrelated edges each time motivates grouping outgoing neighbors by node in Task 3.
+
+## Task 3 - Prepare adjacency
+
+`AdjacencyGraph` creates an empty neighbor list for every supplied node, then processes each directed edge by appending its destination to the list for the source node. This keeps outgoing neighbors in input order and retains nodes with no outgoing edges.
+
+```text
+Entrance   -> [Hall, StoreRoom]
+Hall       -> [Armory, Courtyard]
+StoreRoom  -> [Courtyard]
+Armory     -> [BossRoom]
+Courtyard  -> [Hall, BossRoom]
+BossRoom   -> []
+SecretRoom -> []
+```
+
+Building the dictionary and grouping the edges takes **O(V + E)** time and **O(V + E)** additional storage. After preparation, finding the neighbor list for a node is an expected **O(1)** dictionary lookup. Processing its neighbors takes **O(degree(v))** time. This prepares the graph once for the repeated neighbor lookups needed by traversal.
