@@ -29,3 +29,9 @@ SecretRoom is disconnected: it has no incoming or outgoing edges.
 - **Can Entrance reach BossRoom?** Yes. One valid path is `Entrance -> Hall -> Armory -> BossRoom`.
 - **Can Entrance reach SecretRoom?** No. SecretRoom has no incoming edges, so no path from Entrance leads to it.
 - **Can BossRoom reach Entrance?** No. BossRoom has no outgoing edges, so it cannot move to another room.
+
+## Task 2 - Inspect the edge-list baseline
+
+`EdgeListGraph` stores every directed edge in one global list. To find the outgoing neighbors of `Hall`, `GetNeighbors("Hall")` scans that list and keeps the destinations of edges whose `From` is `Hall`. In the dungeon graph, those edges are `Hall -> Armory` and `Hall -> Courtyard`, so the result is `Armory, Courtyard`.
+
+The method checks all `E` edges for each call, giving `GetNeighbors(node)` a time cost of **O(E)**, even when the node has only a few outgoing edges or none. This is correct, but a traversal repeatedly asks for neighbors, repeatedly scanning unrelated edges motivates grouping outgoing neighbors by node in Task 3.
