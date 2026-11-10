@@ -174,6 +174,14 @@ namespace DSA.Lab05.Tests
                 Is.True);
         }
 
+        [Test]
+        public void BreadthFirstOrder_IsolatedNodeReturnsOnlyItself()
+        {
+            GraphFixture fixture = BuildExample();
+
+            Assert.That(GraphTraversal.BreadthFirstOrder(fixture.Adjacency, "SecretRoom"), Is.EqualTo(new[] { "SecretRoom" }));
+        }
+
         private static GraphFixture BuildExample()
         {
             string[] nodes =

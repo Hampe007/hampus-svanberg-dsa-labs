@@ -95,3 +95,11 @@ Different routes can also reach the same node. For example, `Courtyard` can be r
 For the dungeon graph, `Entrance` can reach `BossRoom`, while it cannot reach the disconnected `SecretRoom`. A node can reach itself, so a valid start that equals the target returns `true` on the first dequeue. If either node is missing from the graph, the method returns `false`.
 
 The search may stop before visiting every reachable node. In the worst case it still takes **O(V + E)** time and **O(V)** space for the queue and visited set.
+
+## Task 8 - Add one meaningful test
+
+`BreadthFirstOrder_IsolatedNodeReturnsOnlyItself` starts BFS at `SecretRoom`, which has no outgoing edges. The expected result is just `SecretRoom`.
+
+This checks that BFS includes the starting node even when it cannot reach any other room.
+
+All 14 tests pass, with 0 failures and 0 skipped tests.
