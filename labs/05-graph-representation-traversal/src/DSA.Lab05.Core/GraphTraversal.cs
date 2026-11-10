@@ -12,9 +12,7 @@ namespace DSA.Lab05
     /// </summary>
     public static class GraphTraversal
     {
-        public static IReadOnlyList<string> BreadthFirstOrder(
-            AdjacencyGraph graph,
-            string start)
+        public static IReadOnlyList<string> BreadthFirstOrder(AdjacencyGraph graph, string start)
         {
             if (graph == null)
             {
@@ -50,9 +48,7 @@ namespace DSA.Lab05
             return order;
         }
 
-        public static IReadOnlyList<string> DepthFirstOrder(
-            AdjacencyGraph graph,
-            string start)
+        public static IReadOnlyList<string> DepthFirstOrder(AdjacencyGraph graph, string start)
         {
             if (graph == null)
             {
@@ -90,10 +86,7 @@ namespace DSA.Lab05
             return order;
         }
 
-        public static bool IsReachableBfs(
-            AdjacencyGraph graph,
-            string start,
-            string target)
+        public static bool IsReachableBfs(AdjacencyGraph graph, string start, string target)
         {
             if (graph == null)
             {
