@@ -70,7 +70,7 @@ C is removed first even though B was added first. B and G remain in the frontier
 
 The supplied frontier uses a **binary min-heap**, which keeps the smallest priority at the root. Adding and removing entries takes O(log n) time, where n is the number of queued entries. Reading `Count` takes O(1).
 
-It has no decrease-key operation to change an existing entry's priority. A cheaper route is enqueued as a new entry; handling the old entry is covered in Task 5.
+It has no decrease-key operation to change an existing entry's priority. A cheaper route is enqueued as a new entry. The old entry remains in the frontier.
 
 ## Task 3 - Track best-known total cost
 
@@ -83,7 +83,7 @@ var bestCost = new Dictionary<string, int>();
 bestCost[start] = 0;
 ```
 
-Reaching the start costs nothing. A node missing from the dictionary has no known route yet; its cost is not zero.
+Reaching the start costs nothing. A node missing from the dictionary has no known route yet. Its cost is not zero.
 
 ### Calculate and compare a candidate
 
@@ -101,4 +101,48 @@ We can check whether the destination already has a known cost with:
 bool hasKnownCost = bestCost.TryGetValue(edge.To, out int knownCost);
 ```
 
-The candidate is an improvement if `!hasKnownCost || candidate < knownCost`. An equal or higher cost does not improve the route. Updating the dictionary and frontier is the relaxation step in Task 4.
+The candidate is an improvement if `!hasKnownCost || candidate < knownCost`. An equal or higher cost does not improve the route. Updating the dictionary and frontier is called relaxation.
+
+## Task 4 - Relax an edge
+
+**Relaxation** means checking whether an edge gives us a cheaper route to its destination.
+
+We remove the smallest-priority entry from the frontier and look at the current node's outgoing edges. For each edge:
+
+```csharp
+int candidate = bestCost[current] + edge.Cost;
+
+if (!bestCost.TryGetValue(edge.To, out int knownCost) || candidate < knownCost)
+{
+    bestCost[edge.To] = candidate;
+    cameFrom[edge.To] = current;
+    frontier.Enqueue(edge.To, candidate);
+}
+```
+
+If the destination has no known cost, or the candidate is cheaper, we update three things:
+
+- `bestCost`: the improved total cost.
+- `cameFrom`: the node we reached it from.
+- The frontier: a new entry with the improved cost as its priority.
+
+Equal or more expensive candidates are ignored. Being discovered earlier does not prevent a node from getting a cheaper route.
+
+### Example: improving B
+
+After processing A, the known costs and waiting entries are:
+
+```text
+bestCost: A=0, B=5, C=2, G=20
+frontier (by priority): C:2, B:5, G:20
+```
+
+C is processed next. Its edge to B gives `2 + 2 = 4`, improving B from 5 to 4. Its edge to D gives `2 + 6 = 8`.
+
+```text
+bestCost: A=0, B=4, C=2, D=8, G=20
+cameFrom[B] = C
+frontier (by priority): B:4, B:5, D:8, G:20
+```
+
+The frontier now contains both B:4 and B:5, but bestCost[B] holds the improved cost of 4.

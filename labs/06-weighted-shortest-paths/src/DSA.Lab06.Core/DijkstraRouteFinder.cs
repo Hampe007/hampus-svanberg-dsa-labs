@@ -31,17 +31,28 @@ namespace DSA.Lab06
 
             int expandedNodes = 0;
 
-            // TODO Lab 6A:
-            // 1. Repeatedly remove the smallest-priority frontier candidate.
-            // 2. Ignore stale entries when a cheaper cost is already known.
-            // 3. Finalize/expand the current node.
-            // 4. If it is the goal, reconstruct the route using cameFrom.
-            // 5. Relax each outgoing edge:
-            //      candidate = bestCost[current] + edge.Cost
-            //    If candidate improves the known cost, update both bestCost and cameFrom,
-            //    then enqueue the neighbor with the improved total cost.
-            //
-            // Implement one small piece at a time and run the relevant tests.
+            while (frontier.Count > 0)
+            {
+                var entry = frontier.Dequeue();
+                string current = entry.Value;
+
+                // TODO Task 5: skip stale entries before expanding the node.
+                expandedNodes++;
+
+                // TODO Tasks 6 and 7: finalize the goal and reconstruct its route.
+
+                foreach (WeightedEdge edge in graph.GetOutgoing(current))
+                {
+                    int candidate = bestCost[current] + edge.Cost;
+
+                    if (!bestCost.TryGetValue(edge.To, out int knownCost) || candidate < knownCost)
+                    {
+                        bestCost[edge.To] = candidate;
+                        cameFrom[edge.To] = current;
+                        frontier.Enqueue(edge.To, candidate);
+                    }
+                }
+            }
 
             return RouteResult.NotFound(expandedNodes);
         }
