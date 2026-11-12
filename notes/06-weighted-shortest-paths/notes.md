@@ -71,3 +71,34 @@ C is removed first even though B was added first. B and G remain in the frontier
 The supplied frontier uses a **binary min-heap**, which keeps the smallest priority at the root. Adding and removing entries takes O(log n) time, where n is the number of queued entries. Reading `Count` takes O(1).
 
 It has no decrease-key operation to change an existing entry's priority. A cheaper route is enqueued as a new entry; handling the old entry is covered in Task 5.
+
+## Task 3 - Track best-known total cost
+
+`bestCost` stores the cheapest total cost discovered so far for each node, measured from the start. A cost can improve when we find another route.
+
+The supplied code creates the dictionary and sets the starting cost:
+
+```csharp
+var bestCost = new Dictionary<string, int>();
+bestCost[start] = 0;
+```
+
+Reaching the start costs nothing. A node missing from the dictionary has no known route yet; its cost is not zero.
+
+### Calculate and compare a candidate
+
+When considering an outgoing edge, we add its cost to the known cost of reaching the current node:
+
+```csharp
+int candidate = bestCost[current] + edge.Cost;
+```
+
+For example, if reaching C costs 2 and `C -> B` costs 2, reaching B through C would cost 4. If B's current best cost is 5, this candidate is cheaper.
+
+We can check whether the destination already has a known cost with:
+
+```csharp
+bool hasKnownCost = bestCost.TryGetValue(edge.To, out int knownCost);
+```
+
+The candidate is an improvement if `!hasKnownCost || candidate < knownCost`. An equal or higher cost does not improve the route. Updating the dictionary and frontier is the relaxation step in Task 4.
