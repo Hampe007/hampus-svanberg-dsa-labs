@@ -204,3 +204,41 @@ Cost: 2 + 2 + 2 + 3 + 2 + 2 = 13
 ```
 
 When G:13 is removed from the frontier, its priority matches `bestCost["G"]`. The cost of 13 is final, even though the old G:20 entry is still waiting.
+
+## Task 7 - Remember predecessors and reconstruct the route
+
+`cameFrom` records which node gave us the cheapest route to each destination. It is updated together with `bestCost` when an edge improves the route.
+
+For example, reaching B through C improves B's cost from 5 to 4, so `cameFrom["B"]` changes from A to C.
+
+### Build the path backward
+
+Once the goal is final, we start there and follow predecessors until we reach the start:
+
+```csharp
+var path = new List<string> { goal };
+string node = goal;
+
+while (node != start)
+{
+    node = cameFrom[node];
+    path.Add(node);
+}
+
+path.Reverse();
+return RouteResult.Success(path, bestCost[goal], expandedNodes);
+```
+
+For A to G, following predecessors collects:
+
+```text
+G, F, E, D, B, C, A
+```
+
+Reversing the list puts the route in travel order:
+
+```text
+A -> C -> B -> D -> E -> F -> G
+```
+
+The returned result contains the path, its total cost of 13, and the number of expanded nodes. If the frontier becomes empty without reaching the goal, the method returns `NotFound` with an empty path.

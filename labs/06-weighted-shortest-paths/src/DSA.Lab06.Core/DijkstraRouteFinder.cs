@@ -45,8 +45,17 @@ namespace DSA.Lab06
 
                 if (current == goal)
                 {
-                    // TODO: reconstruct and return the route.
-                    break;
+                    var path = new List<string> { goal };
+                    string node = goal;
+
+                    while (node != start)
+                    {
+                        node = cameFrom[node];
+                        path.Add(node);
+                    }
+
+                    path.Reverse();
+                    return RouteResult.Success(path, bestCost[goal], expandedNodes);
                 }
 
                 foreach (WeightedEdge edge in graph.GetOutgoing(current))
