@@ -36,7 +36,11 @@ namespace DSA.Lab06
                 var entry = frontier.Dequeue();
                 string current = entry.Value;
 
-                // TODO Task 5: skip stale entries before expanding the node.
+                if (entry.Priority != bestCost[current])
+                {
+                    continue;
+                }
+
                 expandedNodes++;
 
                 // TODO Tasks 6 and 7: finalize the goal and reconstruct its route.

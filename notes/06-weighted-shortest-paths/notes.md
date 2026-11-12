@@ -146,3 +146,30 @@ frontier (by priority): B:4, B:5, D:8, G:20
 ```
 
 The frontier now contains both B:4 and B:5, but bestCost[B] holds the improved cost of 4.
+
+## Task 5 - Handle stale queue entries
+
+A **stale entry** is a queued cost that has been replaced by a cheaper one in `bestCost`. Improving a route adds a new entry without removing the old one.
+
+For example, the frontier can contain both B:4 and B:5 while `bestCost["B"]` is 4. B:4 represents the current best cost. B:5 is outdated.
+
+After dequeuing an entry, we compare its priority with the stored best cost:
+
+```csharp
+if (entry.Priority != bestCost[current])
+{
+    continue;
+}
+```
+
+`continue` skips the rest of this loop iteration and moves to the next queued entry. The check comes before `expandedNodes++` and before reading outgoing edges, so stale entries are neither counted nor expanded.
+
+### Example: skipping B:5
+
+```text
+Dequeued entry: B:5
+bestCost[B]: 4
+5 != 4 -> skip
+```
+
+The best cost remains 4 and the predecessor remains C. We do not overwrite the improved route with information from the old entry.
