@@ -86,14 +86,27 @@ The core Dijkstra search loop is intentionally incomplete.
 Expected supplied test state:
 
 ```text
-4 passing
-7 failing
+6 passing
+5 failing
 3 explicit/skipped optional A* tests
 ```
+The six passing tests establish:
+- graph adjacency works;
+- the supplied min-frontier behaves correctly;
+- start == goal works;
+- an unknown goal returns not found;
+- a disconnected goal currently returns not found;
+- traversal respects edge direction in the supplied baseline.
+The last two pass because the unfinished route finder currently falls through to NotFound for routes it cannot solve yet. They do not mean that the core Dijkstra search has already been implemented.
 
-Treat this as a signal, not as seven unrelated bugs.
+Treat the five failing tests as one shared signal, not as five unrelated bugs.
 
-The seven failing tests share the same missing Dijkstra mechanism.
+They depend on the missing Dijkstra mechanism:
+- choosing the least-cost route rather than the fewest-edge route;
+- improving an already discovered node when a cheaper route is found;
+- reconstructing the route;
+- handling cycles correctly during weighted search;
+- handling stale priority-queue entries.
 
 ---
 
