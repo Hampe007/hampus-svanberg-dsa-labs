@@ -173,3 +173,34 @@ bestCost[B]: 4
 ```
 
 The best cost remains 4 and the predecessor remains C. We do not overwrite the improved route with information from the old entry.
+
+## Task 6 - Know when the goal is final
+
+Discovering the goal means we have found a possible route. It does not mean that route is the cheapest.
+
+Dijkstra can stop when the goal is removed from the min-frontier with its current best-known cost. The stale-entry check must happen first.
+
+```csharp
+if (current == goal)
+{
+    // TODO: reconstruct and return the route.
+    break;
+}
+```
+
+`break` exits the search loop. The successful route return is still incomplete, so the method currently falls through to `NotFound`.
+
+### Why this stopping point is safe
+
+The frontier removes the cheapest waiting candidate first. With non-negative edge costs, exploring the remaining candidates cannot produce a cheaper route to the goal.
+
+### Example: A to G
+
+G is first discovered directly from A at cost 20. Stopping there would miss the cheaper route:
+
+```text
+A -> C -> B -> D -> E -> F -> G
+Cost: 2 + 2 + 2 + 3 + 2 + 2 = 13
+```
+
+When G:13 is removed from the frontier, its priority matches `bestCost["G"]`. The cost of 13 is final, even though the old G:20 entry is still waiting.

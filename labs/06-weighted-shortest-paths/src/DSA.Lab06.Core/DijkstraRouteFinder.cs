@@ -43,7 +43,11 @@ namespace DSA.Lab06
 
                 expandedNodes++;
 
-                // TODO Tasks 6 and 7: finalize the goal and reconstruct its route.
+                if (current == goal)
+                {
+                    // TODO: reconstruct and return the route.
+                    break;
+                }
 
                 foreach (WeightedEdge edge in graph.GetOutgoing(current))
                 {
