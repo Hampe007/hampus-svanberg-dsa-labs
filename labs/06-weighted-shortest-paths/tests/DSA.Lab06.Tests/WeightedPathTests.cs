@@ -129,6 +129,18 @@ namespace DSA.Lab06.Tests
             Assert.That(result.Found, Is.False);
         }
 
+        [Test]
+        public void Dijkstra_StartWithoutOutgoingEdges_ReturnsNotFound()
+        {
+            var finder = new DijkstraRouteFinder();
+
+            RouteResult result = finder.FindRoute(DemoWorld.BuildMainGraph(), "X", "A");
+
+            Assert.That(result.Found, Is.False);
+            Assert.That(result.Path, Is.Empty);
+            Assert.That(result.ExpandedNodes, Is.EqualTo(1));
+        }
+
         [Test, Explicit("Optional Lab 6B / A* extension")]
         public void AStar_FindsSameLeastCostRouteAsDijkstra()
         {

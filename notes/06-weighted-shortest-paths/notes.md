@@ -282,3 +282,13 @@ expandedNodes = 7
 The queued priority matched the best-known cost, confirming that the search stopped at the finalized goal cost.
 
 All 11 required tests passed, with 0 failures. The 3 optional A* tests were not run.
+
+## Add one meaningful test - Start without outgoing edges
+
+`Dijkstra_StartWithoutOutgoingEdges_ReturnsNotFound` searches from X to A in the supplied graph. X exists but has no outgoing edges, so it cannot reach A.
+
+The test checks that the result is not found, the path is empty, and only X is counted as expanded.
+
+The supplied disconnected-goal test searches from A to X. This test starts at X instead and checks that the search finishes after processing just the starting node.
+
+All 12 tests passed, including the new test, with 0 failures. The 3 optional A* tests were not run.
