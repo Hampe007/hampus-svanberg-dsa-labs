@@ -242,3 +242,43 @@ A -> C -> B -> D -> E -> F -> G
 ```
 
 The returned result contains the path, its total cost of 13, and the number of expanded nodes. If the frontier becomes empty without reaching the goal, the method returns `NotFound` with an empty path.
+
+## Task 8 - Run tests progressively
+
+The required tests were run after each implementation step. During Tasks 4 to 6, 6 passed and 5 failed because the search did not yet return successful routes. After reconstruction was implemented, those five tests also passed.
+
+### Route checks
+
+A separate check on a two-node graph returned A -> B with cost 5. The supplied tests confirmed:
+
+- A -> C -> B costs 4, improving on the direct cost of 5.
+- A -> C -> B -> D -> E reconstructs the route to E with cost 9.
+- A -> X returns not found with an empty path.
+- C -> B -> D -> E costs 7 and finishes despite the cycle.
+- G -> A returns not found because the edges are directed.
+
+The least-cost route to G was:
+
+```text
+A -> C -> B -> D -> E -> F -> G
+Total cost: 13
+```
+
+This route uses more edges than A -> G but costs less than its direct cost of 20.
+
+### Debugger checks
+
+The A-to-X search returned 7 expanded nodes. The reachable nodes were processed without counting the outdated frontier entries as extra expansions.
+
+At the goal check for A to G, the debugger showed:
+
+```text
+current = G
+entry.Priority = 13
+bestCost[G] = 13
+expandedNodes = 7
+```
+
+The queued priority matched the best-known cost, confirming that the search stopped at the finalized goal cost.
+
+All 11 required tests passed, with 0 failures. The 3 optional A* tests were not run.
